@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C357D9A0195C4434008D5A5F /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = C357D99F195C4434008D5A5F /* loading.png */; };
 		C3A6928A195C0F3A002A6144 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A69289195C0F3A002A6144 /* AppDelegate.swift */; };
 		C3A6928C195C0F3A002A6144 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A6928B195C0F3A002A6144 /* ViewController.swift */; };
 		C3A6928F195C0F3A002A6144 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3A6928D195C0F3A002A6144 /* Main.storyboard */; };
 		C3A69291195C0F3A002A6144 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3A69290195C0F3A002A6144 /* Images.xcassets */; };
 		C3A6929D195C0F3B002A6144 /* test_webservice_callTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A6929C195C0F3B002A6144 /* test_webservice_callTests.swift */; };
+		C3A692A7195C0FC7002A6144 /* WebProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A692A6195C0FC7002A6144 /* WebProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,6 +27,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C357D99F195C4434008D5A5F /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = loading.png; path = ../../../../Downloads/loading.png; sourceTree = "<group>"; };
 		C3A69284195C0F3A002A6144 /* test_webservice_call.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = test_webservice_call.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3A69288195C0F3A002A6144 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C3A69289195C0F3A002A6144 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -34,6 +37,7 @@
 		C3A69296195C0F3A002A6144 /* test_webservice_callTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = test_webservice_callTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3A6929B195C0F3B002A6144 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C3A6929C195C0F3B002A6144 /* test_webservice_callTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test_webservice_callTests.swift; sourceTree = "<group>"; };
+		C3A692A6195C0FC7002A6144 /* WebProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,11 +79,13 @@
 		C3A69286195C0F3A002A6144 /* test_webservice_call */ = {
 			isa = PBXGroup;
 			children = (
+				C357D99F195C4434008D5A5F /* loading.png */,
 				C3A69289195C0F3A002A6144 /* AppDelegate.swift */,
 				C3A6928B195C0F3A002A6144 /* ViewController.swift */,
 				C3A6928D195C0F3A002A6144 /* Main.storyboard */,
 				C3A69290195C0F3A002A6144 /* Images.xcassets */,
 				C3A69287195C0F3A002A6144 /* Supporting Files */,
+				C3A692A6195C0FC7002A6144 /* WebProtocol.swift */,
 			);
 			path = test_webservice_call;
 			sourceTree = "<group>";
@@ -189,6 +195,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C357D9A0195C4434008D5A5F /* loading.png in Resources */,
 				C3A6928F195C0F3A002A6144 /* Main.storyboard in Resources */,
 				C3A69291195C0F3A002A6144 /* Images.xcassets in Resources */,
 			);
@@ -208,6 +215,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3A692A7195C0FC7002A6144 /* WebProtocol.swift in Sources */,
 				C3A6928C195C0F3A002A6144 /* ViewController.swift in Sources */,
 				C3A6928A195C0F3A002A6144 /* AppDelegate.swift in Sources */,
 			);
@@ -399,6 +407,7 @@
 				C3A692A2195C0F3B002A6144 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C3A692A3195C0F3B002A6144 /* Build configuration list for PBXNativeTarget "test_webservice_callTests" */ = {
 			isa = XCConfigurationList;
@@ -407,6 +416,7 @@
 				C3A692A5195C0F3B002A6144 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
