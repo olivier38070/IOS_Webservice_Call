@@ -43,6 +43,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+        println("count " , tableData.count)
         
         return tableData.count
     }
@@ -67,7 +68,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         cell!.text = tableData[indexPath.row].valueForKey("projectCode") as String
-        cell!.detailTextLabel.text = tableData[indexPath.row].valueForKey("projectProtocol") as NSString
+        cell!.detailTextLabel.text = tableData[indexPath.row].valueForKey("protocol") as NSString
         
         return cell
         
@@ -77,14 +78,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         
         var code: String = tableData[indexPath.row].valueForKey("projectCode") as String
-        var projectProtocol: String = tableData[indexPath.row].valueForKey("projectProtocol") as String
-        var email: String = tableData[indexPath.row].valueForKey("userEmail") as String
-        var name: String = tableData[indexPath.row].valueForKey("userName") as String
+        var projectProtocol: String = tableData[indexPath.row].valueForKey("protocol") as String
+
+        var name: String = tableData[indexPath.row].valueForKey("userEmail") as String
 
         //Show the alert view with the tracks information
         var alert: UIAlertView = UIAlertView()
         alert.title = name
-        alert.message = code + " " + projectProtocol + " " + email
+        alert.message = code + " " + projectProtocol + " "
         alert.addButtonWithTitle("Ok")
         alert.show()
     }

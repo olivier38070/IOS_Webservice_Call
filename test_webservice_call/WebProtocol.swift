@@ -36,7 +36,8 @@ class webServiceCallAPI: NSObject {
     func getInfos(searchTerm: String) {
 
         // do an asynchronous call
-        var urlPath = "http://10.4.2.139:88/service1.svc/GetInfos/"
+        //var urlPath = "http://dev-transfer.mywebsend.com/serviceRest.svc/GetInfos/"
+        var urlPath = "http://10.4.2.139:8084/serviceRest.svc/GetInfos/"
         
         var url: NSURL = NSURL(string: urlPath)
         var request: NSURLRequest = NSURLRequest(URL: url)
