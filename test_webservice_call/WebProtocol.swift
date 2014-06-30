@@ -7,9 +7,13 @@
 //
 import UIKit
 
-//protocol ITunesSearchAPIProtocol {
-//    func didRecieveResponse(results: NSDictionary)
-//}
+// help here :
+// http://www.codeproject.com/Articles/105273/Create-RESTful-WCF-Service-API-Step-By-Step-Guide
+// http://network-development.blogspot.fr/2014/06/access-rest-web-service-with-apples-new.html
+// http://stackoverflow.com/questions/24074042/getting-values-from-json-array-in-swift
+// http://stackoverflow.com/questions/24326918/nested-json-data-will-cause-crash-using-ns-dictionary-in-swift
+
+
 
 protocol WebServicesAPIProtocol {
     func didRecieveResponse(results: NSDictionary)
@@ -18,13 +22,6 @@ protocol WebServicesAPIProtocol {
 class webServiceCallAPI: NSObject {
     var data: NSMutableData = NSMutableData()
     var delegate: WebServicesAPIProtocol?
-
-    // help here :
-    // http://www.codeproject.com/Articles/105273/Create-RESTful-WCF-Service-API-Step-By-Step-Guide
-    // http://network-development.blogspot.fr/2014/06/access-rest-web-service-with-apples-new.html
-    // http://stackoverflow.com/questions/24074042/getting-values-from-json-array-in-swift
-    // http://stackoverflow.com/questions/24326918/nested-json-data-will-cause-crash-using-ns-dictionary-in-swift
-    
 
     //Clean up the search terms by replacing spaces with +
     //var itunesSearchTerm = searchTerm.stringByReplacingOccurrencesOfString(" ",

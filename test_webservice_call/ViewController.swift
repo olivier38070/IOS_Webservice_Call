@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 olivier. All rights reserved.
 //
 
+
+// Help here :
+// http://bharathnagarajrao.wordpress.com/2014/06/17/swiftly-learning-swift/
+
+
 import UIKit
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, WebServicesAPIProtocol {
@@ -23,8 +28,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Do any additional setup after loading the view, typically from a nib.
         
         webService.delegate = self;
-        webService.getInfos("Jimmy Buffett")
+        webService.getInfos("ws_user1")
         
+        // not needed. TODO Investigate why ???
         //self.appsTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
     
@@ -42,6 +48,27 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         appsTableView.reloadData()
     }
     
+    
+    
+    
+    // this is called when user has clicked (tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!)
+    // after that, the DetailsViewController is shown
+    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!)
+    {
+        if segue.identifier == "DetailsViewID"
+        {
+            let detailsViewController = segue.destinationViewController as DetailsViewController
+            detailsViewController.name  = "titi"
+        }
+        
+    }
+    
+    
+    
+    
+    
+    
+    // Called after a reloadData()
     func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
         println("count " , tableData.count)
         
@@ -77,17 +104,21 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // called when click on a row
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         
-        var code: String = tableData[indexPath.row].valueForKey("projectCode") as String
-        var projectProtocol: String = tableData[indexPath.row].valueForKey("protocol") as String
-
-        var name: String = tableData[indexPath.row].valueForKey("userEmail") as String
-
-        //Show the alert view with the tracks information
-        var alert: UIAlertView = UIAlertView()
-        alert.title = name
-        alert.message = code + " " + projectProtocol + " "
-        alert.addButtonWithTitle("Ok")
-        alert.show()
+//        var code: String = tableData[indexPath.row].valueForKey("projectCode") as String
+//        var projectProtocol: String = tableData[indexPath.row].valueForKey("protocol") as String
+//
+//        var name: String = tableData[indexPath.row].valueForKey("userEmail") as String
+//
+//        //Show the alert view with the tracks information
+//        var alert: UIAlertView = UIAlertView()
+//        alert.title = name
+//        alert.message = code + " " + projectProtocol + " "
+//        alert.addButtonWithTitle("Ok")
+//        alert.show()
+        
+        // used with segue, and detailsViewController
+        //self.indexOfSelectedTeam = indexPath.row
+        self.performSegueWithIdentifier("DetailsViewID", sender: self)
     }
     
     
@@ -96,13 +127,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     
     //cell!.textLabel.text = self.items[indexPath.row]
-    
     // Get the track censored name
     //var trackCensorName: NSString = rowData["projectProtocol"] as NSString
     //cell!.detailTextLabel.text = trackCensorName
-    
-    
-    
+
     //
     //            cell!.image = UIImage(named: "loading")
     //
