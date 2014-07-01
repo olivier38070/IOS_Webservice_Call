@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		096532C719627204006F9973 /* TableViewCell_def.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096532C619627204006F9973 /* TableViewCell_def.swift */; };
 		C3A6928A195C0F3A002A6144 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A69289195C0F3A002A6144 /* AppDelegate.swift */; };
 		C3A6928C195C0F3A002A6144 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A6928B195C0F3A002A6144 /* ViewController.swift */; };
 		C3A6928F195C0F3A002A6144 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3A6928D195C0F3A002A6144 /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		096532C619627204006F9973 /* TableViewCell_def.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell_def.swift; sourceTree = "<group>"; };
 		C3A69284195C0F3A002A6144 /* test_webservice_call.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = test_webservice_call.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3A69288195C0F3A002A6144 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C3A69289195C0F3A002A6144 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				C3A69287195C0F3A002A6144 /* Supporting Files */,
 				C3A692A6195C0FC7002A6144 /* WebProtocol.swift */,
 				C3EE568519617DCE007CF282 /* DetailsViewController.swift */,
+				096532C619627204006F9973 /* TableViewCell_def.swift */,
 			);
 			path = test_webservice_call;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 				C3A6928C195C0F3A002A6144 /* ViewController.swift in Sources */,
 				C3A6928A195C0F3A002A6144 /* AppDelegate.swift in Sources */,
 				C3EE568619617DCE007CF282 /* DetailsViewController.swift in Sources */,
+				096532C719627204006F9973 /* TableViewCell_def.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -93,12 +93,20 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if self.tableData.count == 0 {
             return cell
         }
+//        
+//        cell!.text = tableData[indexPath.row].valueForKey("projectCode") as String
+//        cell!.detailTextLabel.text = tableData[indexPath.row].valueForKey("protocol") as NSString
+//        
         
-        cell!.text = tableData[indexPath.row].valueForKey("projectCode") as String
-        cell!.detailTextLabel.text = tableData[indexPath.row].valueForKey("protocol") as NSString
+        //return cell
         
-        return cell
         
+        var cell2: tableViewCell_def = tableView.dequeueReusableCellWithIdentifier("cell") as tableViewCell_def
+        
+        cell2.label1.text = tableData[indexPath.row].valueForKey("projectCode") as String;
+        cell2.label2.text = tableData[indexPath.row].valueForKey("protocol") as NSString
+        
+        return cell2
     }
     
     // called when click on a row
