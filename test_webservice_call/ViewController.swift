@@ -193,9 +193,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         else
         {
-            indexPath.row
-            cell2.label1.text = "User : " + String(indexPath.row)
-            cell2.label2.text = "" //summary[indexPath.row].valueForKey("NbUserConnected") as NSString
+            var users = summary.valueForKey("usersConnected") as NSArray
+            var currentUser = users[indexPath.row-1] as  NSString
+            cell2.label1.text = "User : " + currentUser
+            //cell2.label2.text = "" //summary[indexPath.row].valueForKey("NbUserConnected") as NSString
         }
         
         return cell2
