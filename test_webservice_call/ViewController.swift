@@ -21,14 +21,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var tableData: NSArray = NSArray()
     var imageCache = NSMutableDictionary()
+    var sumaryLoaded : Bool = false;
     
-
+    var summary: NSDictionary = NSDictionary()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        sumaryLoaded = false;
         webService.delegate = self;
-        webService.getInfos("ws_user1")
+        webService.getInfos()
         
         // not needed. TODO Investigate why ???
         //self.appsTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -39,13 +43,82 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Dispose of any resources that can be recreated.
     }
     
+    /*
+    result
+    {
+    getInfosResult =     (
+    {
+    Infos = "<null>";
+    LocalTime = "<null>";
+    UTCTime = "<null>";
+    filesModality =             (
+    MR,
+    CT
+    );
+    uploadUID = "<null>";
+    userEmail = titi;
+    },
+    {
+    Infos = "<null>";
+    siteID = 10;
+    uploadUID = "<null>";
+    userEmail = toto;
+    }
+    );
+    
+    
+    
+    
+    result
+    {
+    getSumaryResult =     {
+    NbUserConnected = 2;
+    NbUserConnectedToday = 2;
+    SitesNumber =         (
+    0001,
+    006
+    );
+    filesModality =         (
+    {
+    name = MR;
+    number = 5;
+    },
+    {
+    name = CT;
+    number = 2;
+    }
+    );
+    filesType =         (
+    {
+    name = DCM;
+    number = 124;
+    }
+    );
+    projectProtocol =         (
+    "gs-us-312-0115",
+    "bms747158-301"
+    );
+    
+    
+    */
+    
+    
     // response received by web service
     func didRecieveResponse(results: NSDictionary) {
+        if (sumaryLoaded == false)
+        {
+            summary = results.valueForKey("getSumaryResult") as NSDictionary
+            // refresh tableView to insert the datas
+            appsTableView.reloadData()
+        }
+        else
+        {
+            tableData = results.valueForKey("getInfosResult") as NSArray
+            // refresh tableView to insert the datas
+            appsTableView.reloadData()
+            
+        }
         
-        tableData = results.valueForKey("getInfosResult") as NSArray
-        
-        // refresh tableView to insert the datas
-        appsTableView.reloadData()
     }
     
     
@@ -72,7 +145,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
         println("count " , tableData.count)
         
-        return tableData.count
+        if (sumaryLoaded == false && summary.count > 0) {
+            var count = summary.valueForKey("usersConnected").count
+            return count + 1
+        }
+        else {
+            return tableData.count
+        }
     }
     
     // Called when each row is built
@@ -90,21 +169,30 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         
-        if self.tableData.count == 0 {
-            return cell
-        }
-//        
-//        cell!.text = tableData[indexPath.row].valueForKey("projectCode") as String
-//        cell!.detailTextLabel.text = tableData[indexPath.row].valueForKey("protocol") as NSString
-//        
-        
-        //return cell
-        
+//        if self.tableData.count == 0 {
+//            return cell
+//        }
         
         var cell2: tableViewCell_def = tableView.dequeueReusableCellWithIdentifier("cell") as tableViewCell_def
         
-        cell2.label1.text = tableData[indexPath.row].valueForKey("projectCode") as String;
-        cell2.label2.text = tableData[indexPath.row].valueForKey("protocol") as NSString
+        if (indexPath.row == 0) {
+            sumaryLoaded = true;
+            
+            cell2.label1.text = "File Transfer Status";
+            
+            var user1 = "Users connected : "
+            var user2 = summary.valueForKey("NbUserConnected") as NSString
+            cell2.label2.text = user1 + user2
+            
+            //webService.getUploadInfos(summary.valueForKey("usersConnected")[0] as NSString )
+            
+        }
+        else
+        {
+            indexPath.row
+            cell2.label1.text = "User : " + String(indexPath.row)
+            cell2.label2.text = "" //summary[indexPath.row].valueForKey("NbUserConnected") as NSString
+        }
         
         return cell2
     }
@@ -112,17 +200,17 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // called when click on a row
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         
-//        var code: String = tableData[indexPath.row].valueForKey("projectCode") as String
-//        var projectProtocol: String = tableData[indexPath.row].valueForKey("protocol") as String
-//
-//        var name: String = tableData[indexPath.row].valueForKey("userEmail") as String
-//
-//        //Show the alert view with the tracks information
-//        var alert: UIAlertView = UIAlertView()
-//        alert.title = name
-//        alert.message = code + " " + projectProtocol + " "
-//        alert.addButtonWithTitle("Ok")
-//        alert.show()
+        //        var code: String = tableData[indexPath.row].valueForKey("projectCode") as String
+        //        var projectProtocol: String = tableData[indexPath.row].valueForKey("protocol") as String
+        //
+        //        var name: String = tableData[indexPath.row].valueForKey("userEmail") as String
+        //
+        //        //Show the alert view with the tracks information
+        //        var alert: UIAlertView = UIAlertView()
+        //        alert.title = name
+        //        alert.message = code + " " + projectProtocol + " "
+        //        alert.addButtonWithTitle("Ok")
+        //        alert.show()
         
         // used with segue, and detailsViewController
         //self.indexOfSelectedTeam = indexPath.row
@@ -132,13 +220,35 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     
     
+    //
+    //    println("line " , indexPath.row)
+    //
+    //    //the tablecell is optional to see if we can reuse cell
+    //    var cell : UITableViewCell?
+    //    cell = tableView.dequeueReusableCellWithIdentifier("cell") as? UITableViewCell
+    //
+    //    //If we did not get a reuseable cell, then create a new one
+    //    if !cell? {
+    //    cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "cell")
+    //    }
+    //
+    //
+    //    if self.tableData.count == 0 {
+    //    return cell
+    //    }
+    //    //
+    //    //        cell!.text = tableData[indexPath.row].valueForKey("projectCode") as String
+    //    //        cell!.detailTextLabel.text = tableData[indexPath.row].valueForKey("protocol") as NSString
+    //    //
+    //
+    //
     
     
     //cell!.textLabel.text = self.items[indexPath.row]
     // Get the track censored name
     //var trackCensorName: NSString = rowData["projectProtocol"] as NSString
     //cell!.detailTextLabel.text = trackCensorName
-
+    
     //
     //            cell!.image = UIImage(named: "loading")
     //

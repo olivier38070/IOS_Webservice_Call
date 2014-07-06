@@ -30,8 +30,23 @@ class webServiceCallAPI: NSObject {
     //var escapedSearchTerm = itunesSearchTerm.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
     //var urlPath = "https://itunes.apple.com/search?term=\(escapedSearchTerm)&media=music"
     
-    func getInfos(searchTerm: String) {
+    func getInfos() {
 
+        // do an asynchronous call
+        //var urlPath = "http://dev-transfer.mywebsend.com/serviceRest.svc/GetInfos/"
+        var urlPath = "http://10.4.2.139:8084/serviceRest.svc/GetSumary/"
+        
+        var url: NSURL = NSURL(string: urlPath)
+        var request: NSURLRequest = NSURLRequest(URL: url)
+        var connection: NSURLConnection = NSURLConnection(request: request, delegate: self,startImmediately: false)
+        
+        println("URL \(url)")
+        
+        connection.start()
+    }
+    
+    func getUploadInfos(searchTerm: String) {
+        
         // do an asynchronous call
         //var urlPath = "http://dev-transfer.mywebsend.com/serviceRest.svc/GetInfos/"
         var urlPath = "http://10.4.2.139:8084/serviceRest.svc/GetInfos/"
@@ -40,14 +55,14 @@ class webServiceCallAPI: NSObject {
         var request: NSURLRequest = NSURLRequest(URL: url)
         var connection: NSURLConnection = NSURLConnection(request: request, delegate: self,startImmediately: false)
         
-        println("Search at URL \(url)")
+        println("URL \(url)")
         
         connection.start()
     }
     
     //NSURLConnection Connection failed
     func connection(connection: NSURLConnection!, didFailWithError error: NSError!) {
-        println("Failed with error:\(error.localizedDescription)")
+        println("Connection Failed :\(error.localizedDescription)")
     }
     
     //New request so we need to clear the data object
