@@ -145,13 +145,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
         println("count " , tableData.count)
         
+        // first call, with summary datas, returne the number of users + 1 row for the summary
         if (sumaryLoaded == false && summary.count > 0) {
             var count = summary.valueForKey("usersConnected").count
             return count + 1
         }
-        else {
-            return tableData.count
-        }
+        //else {
+        //    return tableData.count
+        //}
+        
+        
+        // during inits, we return 0, as the table will not show anything.
+        return 0;
+        
     }
     
     // Called when each row is built
@@ -159,16 +165,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         println("line " , indexPath.row)
         
-        //the tablecell is optional to see if we can reuse cell
-        var cell : UITableViewCell?
-        cell = tableView.dequeueReusableCellWithIdentifier("cell") as? UITableViewCell
-        
-        //If we did not get a reuseable cell, then create a new one
-        if !cell? {
-            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "cell")
-        }
-        
-        
+//        //the tablecell is optional to see if we can reuse cell
+//        var cell : UITableViewCell?
+//        cell = tableView.dequeueReusableCellWithIdentifier("cell") as? UITableViewCell
+//        
+//        //If we did not get a reuseable cell, then create a new one
+//        if !cell? {
+//            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "cell")
+//        }
 //        if self.tableData.count == 0 {
 //            return cell
 //        }
