@@ -188,6 +188,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             var user2 = summary.valueForKey("NbUserConnected") as NSString
             cell2.label2.text = user1 + user2
             
+            var str = "Nb uploadCompleted : "
+                str += summary.valueForKey("nbUploadCompleted") as String
+            cell2.label4.text = str
             //webService.getUploadInfos(summary.valueForKey("usersConnected")[0] as NSString )
             
         }
@@ -196,6 +199,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             var users = summary.valueForKey("usersConnected") as NSArray
             var currentUser = users[indexPath.row-1] as  NSString
             cell2.label1.text = "User : " + currentUser
+            
+            cell2.label2.text = ""
+            cell2.label3.text = ""
+            cell2.label4.text = ""
             //cell2.label2.text = "" //summary[indexPath.row].valueForKey("NbUserConnected") as NSString
         }
         
