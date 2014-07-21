@@ -13,6 +13,13 @@
 
 import UIKit
 
+class UserUploads {
+    var userName: String = String()
+    var isConnected:String = String()
+    
+    var uploads = [NSDictionary]()
+}
+
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, WebServicesAPIProtocol {
     
     @IBOutlet var appsTableView : UITableView
@@ -20,10 +27,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var webService: webServiceCallAPI = webServiceCallAPI()
     
     var tableData: NSArray = NSArray()
-    var imageCache = NSMutableDictionary()
     var sumaryLoaded : Bool = false;
     
     var summary: NSDictionary = NSDictionary()
+    
+    var usersConnected: NSArray = NSArray()
+    var userUploads:[UserUploads] = [UserUploads]()
+    
+    var nbUsersInfosReceived:Int = 0
+    var nbUsersInfosToReceive = 0
     
     
     override func viewDidLoad() {
@@ -43,84 +55,65 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Dispose of any resources that can be recreated.
     }
     
-    /*
-    result
-    {
-    getInfosResult =     (
-    {
-    Infos = "<null>";
-    LocalTime = "<null>";
-    UTCTime = "<null>";
-    filesModality =             (
-    MR,
-    CT
-    );
-    uploadUID = "<null>";
-    userEmail = titi;
-    },
-    {
-    Infos = "<null>";
-    siteID = 10;
-    uploadUID = "<null>";
-    userEmail = toto;
-    }
-    );
-    
-    
-    
-    
-    result
-    {
-    getSumaryResult =     {
-    NbUserConnected = 2;
-    NbUserConnectedToday = 2;
-    SitesNumber =         (
-    0001,
-    006
-    );
-    filesModality =         (
-    {
-    name = MR;
-    number = 5;
-    },
-    {
-    name = CT;
-    number = 2;
-    }
-    );
-    filesType =         (
-    {
-    name = DCM;
-    number = 124;
-    }
-    );
-    projectProtocol =         (
-    "gs-us-312-0115",
-    "bms747158-301"
-    );
-    
-    
-    */
-    
-    
     // response received by web service
     func didRecieveResponse(results: NSDictionary) {
+        
         if (sumaryLoaded == false)
         {
+            sumaryLoaded = true
+            // Get summary infos. this will be listed in the first row of the table view
+            
             summary = results.valueForKey("getSumaryResult") as NSDictionary
             // refresh tableView to insert the datas
             appsTableView.reloadData()
+            
+            // save the users connected
+            usersConnected = summary.valueForKey("usersConnected") as NSArray
+            
+            nbUsersInfosReceived = 0
+            nbUsersInfosToReceive = usersConnected.count
+            
+            println("nb users connected : " + usersConnected.count.description)
+            
         }
         else
         {
-            tableData = results.valueForKey("getInfosResult") as NSArray
+            var userUpload:UserUploads = UserUploads()
+            
+            // get the array related to one user, containing one/several uploads
+            var someUploads = results.valueForKey("getUsersUploadsResult") as NSDictionary
+
+            var userName = someUploads.valueForKey("UserName") as NSString
+            userUpload.userName = userName
+            var isconnected = someUploads.valueForKey("isConnected") as NSString
+            userUpload.isConnected = isconnected
+            var uploads = someUploads.valueForKey("uploads") as NSArray
+            
+            // enumerate the uploads in the response object
+            for index in 0...uploads.count-1 {
+                var upload = uploads[index] as NSDictionary
+                userUpload.uploads.append(upload)
+            }
+            // add the userUpload to the main list
+            userUploads.append(userUpload)
+            
             // refresh tableView to insert the datas
             appsTableView.reloadData()
+        }
+        
+        // request a set of infos about uploads of one user
+        
+        if (nbUsersInfosReceived < nbUsersInfosToReceive) {
+            //for index in 0...self.usersConnected.count-1
+            var currentUser = usersConnected[nbUsersInfosReceived] as  NSString
+            println("request user : " + currentUser )
             
+            self.webService.delegate = self;
+            self.webService.getUploadInfos(currentUser)
+            nbUsersInfosReceived++
         }
         
     }
-    
     
     
     
@@ -138,22 +131,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     
     
-    
-    
-    
     // Called after a reloadData()
+    // have to return the number of row of the table view
     func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
-        println("count " , tableData.count)
         
-        // first call, with summary datas, returne the number of users + 1 row for the summary
-        if (sumaryLoaded == false && summary.count > 0) {
-            var count = summary.valueForKey("usersConnected").count
+        // return nb row of table view + 1 : first row show the summary
+        if (summary.count > 0) {
+            var count = usersConnected.count;
             return count + 1
         }
-        //else {
-        //    return tableData.count
-        //}
-        
         
         // during inits, we return 0, as the table will not show anything.
         return 0;
@@ -163,24 +149,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // Called when each row is built
     func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
         
-        println("line " , indexPath.row)
-        
-//        //the tablecell is optional to see if we can reuse cell
-//        var cell : UITableViewCell?
-//        cell = tableView.dequeueReusableCellWithIdentifier("cell") as? UITableViewCell
-//        
-//        //If we did not get a reuseable cell, then create a new one
-//        if !cell? {
-//            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "cell")
-//        }
-//        if self.tableData.count == 0 {
-//            return cell
-//        }
+        println("tableView row : " + indexPath.row.description)
         
         var cell2: tableViewCell_def = tableView.dequeueReusableCellWithIdentifier("cell") as tableViewCell_def
         
         if (indexPath.row == 0) {
-            sumaryLoaded = true;
+            // define the forst row = summary infos
             
             cell2.label1.text = "File Transfer Status";
             
@@ -189,21 +163,33 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             cell2.label2.text = user1 + user2
             
             var str = "Nb uploadCompleted : "
-                str += summary.valueForKey("nbUploadCompleted") as String
+            str += summary.valueForKey("nbUploadCompleted") as String
             cell2.label4.text = str
             //webService.getUploadInfos(summary.valueForKey("usersConnected")[0] as NSString )
             
         }
         else
         {
-            var users = summary.valueForKey("usersConnected") as NSArray
-            var currentUser = users[indexPath.row-1] as  NSString
-            cell2.label1.text = "User : " + currentUser
+            if (userUploads.count > 0 && (indexPath.row-1) < userUploads.count) {
             
-            cell2.label2.text = ""
-            cell2.label3.text = ""
-            cell2.label4.text = ""
-            //cell2.label2.text = "" //summary[indexPath.row].valueForKey("NbUserConnected") as NSString
+                println("usersInfos nb lines " + userUploads.count.description)
+
+                var currentUser = userUploads[indexPath.row-1].userName as  NSString
+                cell2.label1.text = "-- " + currentUser
+
+                var conn = userUploads[indexPath.row-1].isConnected
+                if (conn == "") {
+                    cell2.label2.text = "Connected : no"
+                }
+                else {
+                    cell2.label2.text = "Connected : yes"
+                }
+                
+//                var temp:NSDictionary = userUploads[indexPath.row-1] as NSDictionary
+                
+                cell2.label3.text = "nb uploads : " + userUploads[indexPath.row-1].uploads.count.description
+                cell2.label4.text = ""
+            }
         }
         
         return cell2
@@ -229,6 +215,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         self.performSegueWithIdentifier("DetailsViewID", sender: self)
     }
     
+    
+    
+    //        //the tablecell is optional to see if we can reuse cell
+    //        var cell : UITableViewCell?
+    //        cell = tableView.dequeueReusableCellWithIdentifier("cell") as? UITableViewCell
+    //
+    //        //If we did not get a reuseable cell, then create a new one
+    //        if !cell? {
+    //            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "cell")
+    //        }
+    //        if self.tableData.count == 0 {
+    //            return cell
+    //        }
     
     
     

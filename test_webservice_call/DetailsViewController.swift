@@ -12,7 +12,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
     
     var name:String?
     var tableData: NSArray = NSArray()
-    var myArray: String[] = ["olivier", "ws_user1"]
+    var myArray: [String] = ["olivier", "ws_user1"]
     
     
     init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
