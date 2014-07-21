@@ -158,37 +158,37 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             cell2.label1.text = "File Transfer Status";
             
-            var user1 = "Users connected : "
+            var user1 = "Users : "
             var user2 = summary.valueForKey("NbUserConnected") as NSString
             cell2.label2.text = user1 + user2
+            cell2.label3.text = ""
             
-            var str = "Nb uploadCompleted : "
+            var str = "Nb upload Completed : "
             str += summary.valueForKey("nbUploadCompleted") as String
             cell2.label4.text = str
-            //webService.getUploadInfos(summary.valueForKey("usersConnected")[0] as NSString )
-            
         }
         else
         {
             if (userUploads.count > 0 && (indexPath.row-1) < userUploads.count) {
             
                 println("usersInfos nb lines " + userUploads.count.description)
-
-                var currentUser = userUploads[indexPath.row-1].userName as  NSString
+                var user = userUploads[indexPath.row-1]
+                var uploads = user.uploads
+                var lastUpload = uploads[uploads.count-1]
+                
+                var currentUser = user.userName as  NSString
                 cell2.label1.text = "-- " + currentUser
 
-                var conn = userUploads[indexPath.row-1].isConnected
+                var conn = user.isConnected
                 if (conn == "") {
                     cell2.label2.text = "Connected : no"
                 }
                 else {
                     cell2.label2.text = "Connected : yes"
                 }
+                cell2.label3.text = "nb uploads : " + uploads.count.description
                 
-//                var temp:NSDictionary = userUploads[indexPath.row-1] as NSDictionary
-                
-                cell2.label3.text = "nb uploads : " + userUploads[indexPath.row-1].uploads.count.description
-                cell2.label4.text = ""
+                cell2.label4.text = "last connection " + lastUpload.valueForKey("startTime").description
             }
         }
         
