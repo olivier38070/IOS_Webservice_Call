@@ -8,6 +8,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
     
     @IBOutlet var messageLabel : UILabel
     @IBOutlet var message2 : UILabel
+    
     @IBOutlet var myTableView : UITableView
     
     var name:String?
@@ -33,7 +34,12 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
         super.viewDidLoad()
         
         self.messageLabel.text = name
-        self.message2.text = isConnected
+        if (isConnected == nil) {
+            self.message2.text = "no"
+        }
+        else {
+            self.message2.text = isConnected
+        }
         
         // Do any additional setup after loading the view.
         myTableView.reloadData()
@@ -54,28 +60,60 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
     // Called when each row is built
     func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
         
-//        println("detail row : "  + indexPath.row.description)
-//        
-//        //the tablecell is optional to see if we can reuse cell
-//        var cell : UITableViewCell?
-//        cell = tableView.dequeueReusableCellWithIdentifier("cell") as? UITableViewCell
-//        
-//        //If we did not get a reuseable cell, then create a new one
-//        if !cell? {
-//            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "cell")
-//        }
-//        
-////        cell!.textLabel.text = self.myArray[indexPath.row]
-//        
-//        cell!.textLabel.text = "prj Code :" + userUploads.uploads[indexPath.row].valueForKey("projectCode").description
-//        
-//        //var myFont:UIFont = UIFont(name:"Arial", size: 10.0 );
-//        //cell!.textLabel.font  = myFont;
-//        
+        //        println("detail row : "  + indexPath.row.description)
+        //
+        //        //the tablecell is optional to see if we can reuse cell
+        //        var cell : UITableViewCell?
+        //        cell = tableView.dequeueReusableCellWithIdentifier("cell") as? UITableViewCell
+        //
+        //        //If we did not get a reuseable cell, then create a new one
+        //        if !cell? {
+        //            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "cell")
+        //        }
+        //
+        ////        cell!.textLabel.text = self.myArray[indexPath.row]
+        //
+        //        cell!.textLabel.text = "prj Code :" + userUploads.uploads[indexPath.row].valueForKey("projectCode").description
+        //
+        //        //var myFont:UIFont = UIFont(name:"Arial", size: 10.0 );
+        //        //cell!.textLabel.font  = myFont;
+        //
         
         var cell2: tableViewCell_details_def = tableView.dequeueReusableCellWithIdentifier("cell") as tableViewCell_details_def
+        
+        var str = "Code:" + userUploads.uploads[indexPath.row].valueForKey("projectCode").description
+        
+        str += " - " + "Site :" + userUploads.uploads[indexPath.row].valueForKey("siteNumber").description
+        str += " - " + "subject :" + userUploads.uploads[indexPath.row].valueForKey("subjectID").description
+        str += " - " + "UID :" + userUploads.uploads[indexPath.row].valueForKey("uid").description
+        str += " - " + "upload started :" + userUploads.uploads[indexPath.row].valueForKey("startTime").description
+        
+        cell2.label1.text = str
+        
+        
+        str = "Modalities: "
+        var modalities = userUploads.uploads[indexPath.row].valueForKey("filesModality") as NSArray
+        println(" modalities " + modalities.count.description)
+        
+        for index in 0...modalities.count-1 {
+            var name = modalities[index].valueForKey("name") as NSString
+            var nb = modalities[index].valueForKey("number") as NSString
+            str += name + " (" + nb + "); "
+        }
+        cell2.label2.text = str
 
-        cell2.label1.text = "Code:" + userUploads.uploads[indexPath.row].valueForKey("projectCode").description + " - " + "Site :" + userUploads.uploads[indexPath.row].valueForKey("siteNumber").description + " - " + "subject :" + userUploads.uploads[indexPath.row].valueForKey("subjectID").description
+        str = "Files types : "
+        var types = userUploads.uploads[indexPath.row].valueForKey("filesType") as NSArray
+        println(" types " + types.count.description)
+        
+        for index in 0...types.count-1 {
+            var name = types[index].valueForKey("name") as NSString
+            var nb = modalities[index].valueForKey("number") as NSString
+            str += name + " (" + nb + "); "
+        }
+        cell2.label3.text = str
+
+        
         return cell2
     }
     
