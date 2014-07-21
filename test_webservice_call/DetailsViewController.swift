@@ -11,6 +11,9 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet var myTableView : UITableView
     
     var name:String?
+    var isConnected:String?
+    var userUploads:UserUploads = UserUploads()
+    
     var tableData: NSArray = NSArray()
     var myArray: [String] = ["olivier", "ws_user1"]
     
@@ -30,7 +33,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
         super.viewDidLoad()
         
         self.messageLabel.text = name
-        self.message2.text = "salut cvbncxvnbxc"
+        self.message2.text = isConnected
         
         // Do any additional setup after loading the view.
         myTableView.reloadData()
@@ -45,28 +48,35 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
     
     
     func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
-        
-        return myArray.count
-        
+        return userUploads.uploads.count
     }
     
     // Called when each row is built
     func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
         
-        println("num line " , indexPath.row)
+//        println("detail row : "  + indexPath.row.description)
+//        
+//        //the tablecell is optional to see if we can reuse cell
+//        var cell : UITableViewCell?
+//        cell = tableView.dequeueReusableCellWithIdentifier("cell") as? UITableViewCell
+//        
+//        //If we did not get a reuseable cell, then create a new one
+//        if !cell? {
+//            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "cell")
+//        }
+//        
+////        cell!.textLabel.text = self.myArray[indexPath.row]
+//        
+//        cell!.textLabel.text = "prj Code :" + userUploads.uploads[indexPath.row].valueForKey("projectCode").description
+//        
+//        //var myFont:UIFont = UIFont(name:"Arial", size: 10.0 );
+//        //cell!.textLabel.font  = myFont;
+//        
         
-        //the tablecell is optional to see if we can reuse cell
-        var cell : UITableViewCell?
-        cell = tableView.dequeueReusableCellWithIdentifier("cell") as? UITableViewCell
-        
-        //If we did not get a reuseable cell, then create a new one
-        if !cell? {
-            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "cell")
-        }
-        
-        cell!.textLabel.text = self.myArray[indexPath.row]
-        
-        return cell
+        var cell2: tableViewCell_details_def = tableView.dequeueReusableCellWithIdentifier("cell") as tableViewCell_details_def
+
+        cell2.label1.text = "Code:" + userUploads.uploads[indexPath.row].valueForKey("projectCode").description + " - " + "Site :" + userUploads.uploads[indexPath.row].valueForKey("siteNumber").description + " - " + "subject :" + userUploads.uploads[indexPath.row].valueForKey("subjectID").description
+        return cell2
     }
     
     // called when click on a row

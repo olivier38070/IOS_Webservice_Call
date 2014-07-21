@@ -26,9 +26,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var webService: webServiceCallAPI = webServiceCallAPI()
     
-    var tableData: NSArray = NSArray()
     var sumaryLoaded : Bool = false;
-    
     var summary: NSDictionary = NSDictionary()
     
     var usersConnected: NSArray = NSArray()
@@ -36,7 +34,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var nbUsersInfosReceived:Int = 0
     var nbUsersInfosToReceive = 0
-    
+
+    var RowClicked:Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -123,12 +122,28 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     {
         if segue.identifier == "DetailsViewID"
         {
-            let detailsViewController = segue.destinationViewController as DetailsViewController
-            detailsViewController.name  = "titi"
+            if (RowClicked == 0) {
+                let detailsViewController = segue.destinationViewController as DetailsViewController
+                detailsViewController.name  = "Summary"
+                
+                var user1 = "Users : "
+                var user2 = summary.valueForKey("NbUserConnected") as NSString
+                
+                var str = "Nb upload Completed : "
+                str += summary.valueForKey("nbUploadCompleted") as String
+
+                detailsViewController.isConnected = user1 + user2 + " - " + str
+            }
+            else {
+                let detailsViewController = segue.destinationViewController as DetailsViewController
+                detailsViewController.name  = usersConnected[RowClicked-1].description
+                detailsViewController.isConnected = userUploads[RowClicked-1].isConnected
+                detailsViewController.userUploads = userUploads[RowClicked-1]
+                
+            }
         }
         
     }
-    
     
     
     // Called after a reloadData()
@@ -197,25 +212,28 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     // called when click on a row
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
-        
-        //        var code: String = tableData[indexPath.row].valueForKey("projectCode") as String
-        //        var projectProtocol: String = tableData[indexPath.row].valueForKey("protocol") as String
-        //
-        //        var name: String = tableData[indexPath.row].valueForKey("userEmail") as String
-        //
-        //        //Show the alert view with the tracks information
-        //        var alert: UIAlertView = UIAlertView()
-        //        alert.title = name
-        //        alert.message = code + " " + projectProtocol + " "
-        //        alert.addButtonWithTitle("Ok")
-        //        alert.show()
-        
         // used with segue, and detailsViewController
-        //self.indexOfSelectedTeam = indexPath.row
+        
+        RowClicked = indexPath.row
         self.performSegueWithIdentifier("DetailsViewID", sender: self)
     }
     
+
     
+    
+    //        var code: String = tableData[indexPath.row].valueForKey("projectCode") as String
+    //        var projectProtocol: String = tableData[indexPath.row].valueForKey("protocol") as String
+    //
+    //        var name: String = tableData[indexPath.row].valueForKey("userEmail") as String
+    //
+    //        //Show the alert view with the tracks information
+    //        var alert: UIAlertView = UIAlertView()
+    //        alert.title = name
+    //        alert.message = code + " " + projectProtocol + " "
+    //        alert.addButtonWithTitle("Ok")
+    //        alert.show()
+    
+
     
     //        //the tablecell is optional to see if we can reuse cell
     //        var cell : UITableViewCell?

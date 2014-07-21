@@ -14,3 +14,15 @@ class tableViewCell_def: UITableViewCell {
         super.init(style: UITableViewCellStyle.Value1, reuseIdentifier: reuseIdentifier)
     }
 }
+
+
+class tableViewCell_details_def: UITableViewCell {
+    
+    @IBOutlet var label1:UILabel
+    
+    init(style: UITableViewCellStyle, reuseIdentifier: String!)
+    {
+        println("init details cell")
+        super.init(style: UITableViewCellStyle.Value1, reuseIdentifier: reuseIdentifier)
+    }
+}
